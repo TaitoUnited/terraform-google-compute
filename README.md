@@ -37,6 +37,7 @@ virtualMachines:
 YAML attributes:
 
 - See variables.tf for all the supported YAML attributes.
+- See [compute_instance](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance) for attribute descriptions.
 
 Combine with the following modules to get a complete infrastructure defined by YAML:
 
