@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Taito United
+ * Copyright 2024 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,4 +16,22 @@
 
 variable "project_id" {
   type        = string
+}
+
+variable "network" {
+  type        = string
+  description = "Network"
+}
+
+variable "virtual_machines" {
+  type = list(object({
+    name = string
+    zone = string
+    subnetwork = optional(string)
+    machineType = string
+    diskSizeGb = number
+    deletionProtection = bool
+  }))
+  default     = []
+  description = "Resources as JSON (see README.md). You can read values from a YAML file with yamldecode()."
 }

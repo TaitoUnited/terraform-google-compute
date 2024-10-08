@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Taito United
+ * Copyright 2024 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,23 @@
  * limitations under the License.
  */
 
-locals {
-  virtualMachines = var.virtual_machines
+resource "google_compute_instance" "vm" {
+  for_each            = {for item in local.virtualMachines: item.name => item}
+
+  name                = each.value.name
+  machine_type        = each.value.machineType
+  zone                = each.value.zone
+  deletion_protection = each.value.deletionProtection
+
+  network_interface {
+    network = var.network
+    subnetwork = each.value.subnetwork
+  }
+
+  boot_disk {
+    initialize_params {
+      size = each.value.diskSizeGb
+    }
+  }
+
 }

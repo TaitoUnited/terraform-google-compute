@@ -1,7 +1,5 @@
 # Google compute
 
-TODO: implement
-
 Example usage:
 
 ```
@@ -20,6 +18,7 @@ module "compute" {
   version          = "1.0.0"
 
   project_id       = "my-project"
+  network          = "my-project-net"
   virtual_machines = yamldecode(file("${path.root}/../infra.yaml"))["virtualMachines"]
 }
 ```
@@ -30,8 +29,9 @@ Example YAML:
 virtualMachines:
   - name: my-server
     zone: europe-west1-b
+    subnetwork: subnet-europe-west1
     machineType: e2-medium
-    ...
+    diskSizeGb: 100
 ```
 
 YAML attributes:
