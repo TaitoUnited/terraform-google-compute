@@ -25,6 +25,10 @@ resource "google_compute_instance" "vm" {
   network_interface {
     network = var.network
     subnetwork = each.value.subnetwork
+
+    access_config {
+      network_tier = "PREMIUM"
+    }
   }
 
   boot_disk {
