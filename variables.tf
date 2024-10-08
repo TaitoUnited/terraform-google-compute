@@ -29,6 +29,7 @@ variable "virtual_machines" {
     zone = string
     subnetwork = optional(string)
     machineType = string
+    image = string
     diskSizeGb = number
     deletionProtection = bool
   }))

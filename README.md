@@ -31,6 +31,7 @@ virtualMachines:
     zone: europe-west1-b
     subnetwork: subnet-europe-west1
     machineType: e2-medium
+    image: debian-cloud/debian-12
     diskSizeGb: 100
 ```
 

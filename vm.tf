@@ -29,7 +29,8 @@ resource "google_compute_instance" "vm" {
 
   boot_disk {
     initialize_params {
-      size = each.value.diskSizeGb
+      image = each.value.image
+      size  = each.value.diskSizeGb
     }
   }
 
