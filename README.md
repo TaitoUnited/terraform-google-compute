@@ -33,6 +33,8 @@ virtualMachines:
     machineType: e2-medium
     image: debian-cloud/debian-12
     diskSizeGb: 100
+    gpuType: nvidia-tesla-t4
+    gpuCount: 1
 ```
 
 YAML attributes:

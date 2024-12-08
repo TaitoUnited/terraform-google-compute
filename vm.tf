@@ -38,4 +38,19 @@ resource "google_compute_instance" "vm" {
     }
   }
 
+  dynamic "guest_accelerator" {
+    for_each = each.value.gpuCount > 0 ? [1] : []
+    content {
+      count = each.value.gpuCount
+      type = each.value.gpuType
+    }
+  }
+
+  dynamic "scheduling" {
+    for_each = each.value.gpuCount > 0 ? [1] : []
+    content {
+      on_host_maintenance = "TERMINATE"
+    }
+  }
+
 }
