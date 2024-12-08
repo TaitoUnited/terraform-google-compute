@@ -27,7 +27,7 @@ variable "virtual_machines" {
   type = list(object({
     name = string
     zone = string
-    subnetwork = optional(string)
+    subnetwork = string
     externalIp = optional(bool, true)
     sshAuthorizedNetworks = optional(list(string), [])
     publicAuthorizedNetworks = optional(list(string), ["0.0.0.0/32"])

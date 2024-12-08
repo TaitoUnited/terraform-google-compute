@@ -18,6 +18,7 @@ resource "google_compute_address" "static" {
   for_each            = {for item in local.virtualMachinesWithExternalIp: item.name => item}
 
   name                = each.value.name
+  region              = regex("(.*)-[a-z]", each.value.zone)[0]
 }
 
 resource "google_compute_firewall" "ssh" {
