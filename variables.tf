@@ -33,7 +33,7 @@ variable "virtual_machines" {
     diskSizeGb = number
     deletionProtection = bool
     gpuType = optional(string)
-    gpuCount = optional(number)
+    gpuCount = optional(number, 0)
   }))
   default     = []
   description = "Resources as JSON (see README.md). You can read values from a YAML file with yamldecode()."
