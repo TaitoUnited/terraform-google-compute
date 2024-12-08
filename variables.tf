@@ -28,10 +28,15 @@ variable "virtual_machines" {
     name = string
     zone = string
     subnetwork = optional(string)
+    externalIp = optional(bool, true)
+    sshAuthorizedNetworks = optional(list(string), [])
+    publicAuthorizedNetworks = optional(list(string), ["0.0.0.0/32"])
+    publicTcpPorts = optional(list(string), [])
+    publicUdpPorts = optional(list(string), [])
     machineType = string
-    image = string
+    image = optional(string, "debian-cloud/debian-12")
     diskSizeGb = number
-    deletionProtection = bool
+    deletionProtection = optional(bool, true)
     gpuType = optional(string)
     gpuCount = optional(number, 0)
   }))

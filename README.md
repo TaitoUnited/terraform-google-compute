@@ -30,6 +30,16 @@ virtualMachines:
   - name: my-server
     zone: europe-west1-b
     subnetwork: subnet-europe-west1
+    externalIp: false
+    machineType: e2-medium
+    diskSizeGb: 100
+
+  - name: my-server2
+    zone: europe-west1-b
+    subnetwork: subnet-europe-west1
+    sshAuthorizedNetworks: ["35.235.240.0/20"]
+    publicAuthorizedNetworks: ["0.0.0.0/32"]
+    publicTcpPorts: ["80", "443"]
     machineType: e2-medium
     image: debian-cloud/debian-12
     diskSizeGb: 100

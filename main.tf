@@ -16,4 +16,15 @@
 
 locals {
   virtualMachines = var.virtual_machines
+
+  virtualMachinesWithExternalIp = [
+    for vm in local.virtualMachines:
+    vm if vm.externalIp == true
+  ]
+
+  virtualMachinesWithPublicPorts = [
+    for vm in local.virtualMachinesWithExternalIp:
+    vm if length(vm.publicTcpPorts) > 0 || length(vm.publicUdpPorts) > 0
+  ]
+
 }

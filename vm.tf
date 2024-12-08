@@ -14,6 +14,55 @@
  * limitations under the License.
  */
 
+resource "google_compute_address" "static" {
+  for_each            = {for item in local.virtualMachinesWithExternalIp: item.name => item}
+
+  name                = each.value.name
+}
+
+resource "google_compute_firewall" "ssh" {
+  for_each            = {for item in local.virtualMachinesWithExternalIp: item.name => item}
+  name                = "${each.value.name}-ssh"
+  network             = var.network
+
+  allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges       = each.value.sshAuthorizedNetworks
+  target_tags         = ["vm-${each.value.name}"]
+}
+
+resource "google_compute_firewall" "public" {
+  for_each            = {for item in local.virtualMachinesWithPublicPorts: item.name => item}
+  name                = "${each.value.name}-public"
+  network             = var.network
+
+  dynamic "allow" {
+    for_each = length(each.value.publicTcpPorts) > 0 ? [1] : []
+    content {
+      protocol = "tcp"
+      ports    = each.value.publicTcpPorts
+    }
+  }
+
+  dynamic "allow" {
+    for_each = length(each.value.publicUdpPorts) > 0 ? [1] : []
+    content {
+      protocol = "udp"
+      ports    = each.value.publicUdpPorts
+    }
+  }
+
+  source_ranges       = each.value.publicAuthorizedNetworks
+  target_tags         = ["vm-${each.value.name}"]
+}
+
 resource "google_compute_instance" "vm" {
   for_each            = {for item in local.virtualMachines: item.name => item}
 
@@ -22,12 +71,15 @@ resource "google_compute_instance" "vm" {
   zone                = each.value.zone
   deletion_protection = each.value.deletionProtection
 
+  tags                = ["vm-${each.value.name}"]
+
   network_interface {
     network = var.network
     subnetwork = each.value.subnetwork
 
     access_config {
       network_tier = "PREMIUM"
+      nat_ip = google_compute_address.static[each.value.name] != null ? google_compute_address.static[each.value.name].address : null
     }
   }
 
